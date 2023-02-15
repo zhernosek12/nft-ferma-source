@@ -1,6 +1,7 @@
 # nft-ferma-source
 
 https://amiunique.org/fp - сайт для проверки отпечатка браузера
+https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html - проверить видит ли Selenium
 
 ### плагины
 
