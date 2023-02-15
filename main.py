@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
-import os
 import asyncio
-import aiohttp
 import time
 import random
 import modules
@@ -79,7 +77,6 @@ class Manager:
             robot_project_id = data["robot_project_id"]
             profile_id = profile["id"]
 
-            # запускаем исполняемый браузер
             browser = self.parse_and_run_browser(profile)
             browser.connect()
 
@@ -95,8 +92,7 @@ class Manager:
 
         return True
 
-
-if __name__ == '__main__':
+def main():
 
     print("--------------------------------")
     print("-- ferma.zhernosek.xyz-beta03 --")
@@ -130,6 +126,7 @@ if __name__ == '__main__':
                          '2. Запустить браузер\n'
                          '3. Запустить продвижение твиттера\n'
                          '4. Запустить ферму\n'
+                         '5. Выйти\n'
                          'Ввод: '))
 
     if question == 1:
@@ -148,5 +145,15 @@ if __name__ == '__main__':
         print("Запуск фермы...")
         asyncio.new_event_loop().run_until_complete(manager.ferma_run())
 
+    elif question == 5:
+        raise 'Хорошо, покааа...'
+
     else:
-        raise 'Неверный ввод. Попробуйте снова.'
+        print('Неверный ввод. Попробуйте снова.')
+
+    input("\nНажмите на любую клавишу для продолжения...")
+    time.sleep(1)
+    main()
+
+if __name__ == '__main__':
+    main()
