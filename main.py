@@ -3,11 +3,13 @@
 import asyncio
 import time
 import random
-import modules
+import common
 
 from ferma.helpers.custom_browser import CustomBrowser
 from ferma.ferma_worker import FermaWorker
 from server import Server
+
+from ferma.modules.twitter_promontion import TwitterPromontion
 
 class Manager:
     def __init__(self, server, profiles_dir, chrome_driver):
@@ -63,6 +65,7 @@ class Manager:
         return True
 
     async def twitter_promotion(self):
+        await (TwitterPromontion(self)).start()
         return True
 
     async def ferma_run(self):
@@ -98,8 +101,7 @@ def main():
     print("-- ferma.zhernosek.xyz-beta03 --")
     print("--------------------------------")
 
-    config = modules.load_config()
-
+    config = common.load_config()
 
     if "secret_key" not in config or "profiles_dir" not in config or "chrome_driver" not in config:
         secret_key = input('Напиши свой API ключ, получить http://ferma.zhernosek.xyz/Profile.php\nВвод: ')
@@ -120,7 +122,7 @@ def main():
     config["profiles_dir"] = profiles_dir
     config["chrome_driver"] = chrome_driver
 
-    modules.save_config(config)
+    common.save_config(config)
 
     question = int(input('1. Показать мои аккаунты\n'
                          '2. Запустить браузер\n'
@@ -151,7 +153,7 @@ def main():
     else:
         print('Неверный ввод. Попробуйте снова.')
 
-    input("\nНажмите на любую клавишу для продолжения...")
+    input("\nНажмите на Enter для продолжения...")
     time.sleep(1)
     main()
 

@@ -4,13 +4,16 @@ class Server:
     def __init__(self, secret_key):
         self.secret_key = secret_key
         self.url_api = 'http://ferma.zhernosek.xyz/Api.php'
-        #self.url = "http://ferma.zhernosek.xyz/Api.php?method=setScriptStatus"
+        self.url_api_twitter = 'http://checks.wordok.by/twitter/router.php'
+        self.headers = {"Content-Type": "application/json"}
+        self.timeout = aiohttp.ClientTimeout(total=10)
 
     async def checkKey(self):
         async with aiohttp.ClientSession() as session:
             response = await session.get(
                 url=self.url_api + "?method=checkKey&secret_key=" + self.secret_key,
             )
+            await response.text()
         return response
 
     async def myProfiles(self):
@@ -18,6 +21,7 @@ class Server:
             response = await session.get(
                 url=self.url_api + "?method=myProfiles&secret_key=" + self.secret_key,
             )
+            await response.text()
         return response
 
     async def profileInfo(self, username):
@@ -25,6 +29,7 @@ class Server:
             response = await session.get(
                 url=self.url_api + "?method=profileInfo&username=" + username + "&secret_key=" + self.secret_key,
             )
+            await response.text()
         return response
 
     async def robotProject(self):
@@ -32,6 +37,7 @@ class Server:
             response = await session.get(
                 url=self.url_api + "?method=getRobotProject&secret_key=" + self.secret_key,
             )
+            await response.text()
         return response
 
     async def script_error(self, profile_id, robot_script_id, robot_project_id, message):
@@ -44,6 +50,7 @@ class Server:
                       'type': 'fail',
                       'message': message}
             )
+            await response.text()
         print(await response.text())
 
     async def script_success(self, profile_id, robot_script_id, robot_project_id):
@@ -56,6 +63,7 @@ class Server:
                       'type': 'success',
                       'message': ''}
             )
+            await response.text()
         print(await response.text())
 
     async def request_script_finish(self, profile_id, robot_project_id, type):
@@ -66,21 +74,23 @@ class Server:
                       'robot_project_id': robot_project_id,
                       'type': type}
             )
-
+            await response.text()
         print(await response.text())
 
+    """
+        твиттер
+    """
+    async def twitterGetLastTask(self):
+        async with aiohttp.ClientSession(headers=self.headers, timeout=self.timeout) as session:
+            response = await session.get(
+                url=self.url_api_twitter + "?secret_key=" + self.secret_key,
+            )
+            await response.text()
+
+        return response
+
+
 """
-def get_test_account():
-
-    url = "http://ferma.zhernosek.xyz/Api.php?method=getTestAccount"
-
-    payload = {}
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    return response.json()
-
 
 
 def get_robot_project_error():

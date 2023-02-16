@@ -34,6 +34,12 @@ class CustomBrowser:
         options.add_argument("--disable-gpu")
         options.add_argument("--lang=en-US")
 
+        # новые параметры, пока не знаю зачем, но типо чтобы нас меньше отслеживать
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--enable-aggressive-domstorage-flushing")
+        options.add_argument("--profiling-flush=1")                             # кажду секунду сохраняем данные
+
+
         wire_options = {
             'proxy': {
                 'http': self.proxy,
