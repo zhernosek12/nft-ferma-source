@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from ferma.helpers.custom_browser import CustomBrowser
 
-
 class TwitterPromontion:
     def __init__(self, manager):
         self.browser = None
