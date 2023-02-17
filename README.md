@@ -9,3 +9,11 @@
 
 1. https://chrome.google.com/webstore/detail/canvas-fingerprint-defend/lanfdkkpgfjfdikkncbnojekcppdebfp
 2. https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn
+
+
+## Инструкция
+
+```
+git clone https://github.com/zhernosek12/nft-ferma-source.git
+```
+
