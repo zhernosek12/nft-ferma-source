@@ -13,6 +13,8 @@
 
 ## Инструкция
 
+Запускаем PyCharm
+
 ```
 git clone https://github.com/zhernosek12/nft-ferma-source.git
 ```
