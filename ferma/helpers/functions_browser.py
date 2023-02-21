@@ -1,6 +1,5 @@
 import json
 import urllib.request as urllib2
-import http.cookiejar as cookielib
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
