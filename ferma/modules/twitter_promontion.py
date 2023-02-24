@@ -17,6 +17,18 @@ class TwitterPromontion:
         self.step = 0
         self.max_steps = 100
 
+        self.lang_RU = {
+            "follow": "Читать",
+            "unfollow": "Читаю",
+            "unfollow2": "Перестать читать"
+        }
+        self.lang_EN = {
+            "follow": "Follow",
+            "unfollow": "Following",
+            "unfollow2": "Unfollow"
+        }
+        self.lang = {}
+
     async def start(self, profile_id=""):
 
         while True:
@@ -46,6 +58,7 @@ class TwitterPromontion:
                 time.sleep(3)
 
                 self.tw_page_check_auth()
+                self.tw_check_lang()
 
                 # получим наших подписчиков
                 if type == "GET_FOLLOWERS":
@@ -94,8 +107,14 @@ class TwitterPromontion:
         except:
             input("авторизуйте в твиттере, и нажми на Enter...")
 
+    def tw_check_lang(self):
+        lang = self.driver.find_element(By.TAG_NAME, "html").get_attribute("lang")
+        if lang == "en":
+            self.lang = self.lang_EN
+        if lang == "ru":
+            self.lang = self.lang_RU
+
     def tw_follow(self, url):
-        print("подписываемся на", url)
         try:
             if url is not None:
                 self.driver.get(url)
@@ -104,7 +123,8 @@ class TwitterPromontion:
 
             # искать не фоллов на англ и рус
 
-            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-42olwf.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr").click();')
+            follow = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="'+str(self.lang["follow"])+'"]')))
+            self.driver.execute_script("arguments[0].click();", follow)
 
             # проверим, лимит не превышен?
             time.sleep(1.5)
@@ -254,9 +274,7 @@ class TwitterPromontion:
 
         return ban
 
-
-
-    #
+    
     def tw_scan_my_followers(self, user_id):
 
         follower_list = []
@@ -304,19 +322,19 @@ class TwitterPromontion:
 
             time.sleep(1)
 
-            # unfollow
-            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-1niwhzg.r-1ets6dv.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr").click();')
+            unfollow = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="'+str(self.lang["unfollow"])+'"]')))
+            self.driver.execute_script("arguments[0].click();", unfollow)
 
             time.sleep(1)
 
-            # accept action
-            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-42olwf.r-sdzlij.r-1phboty.r-rs99b7.r-16y2uox.r-6gpygo.r-peo1c.r-1ps3wis.r-1ny4l3l.r-1udh08x.r-1guathk.r-1udbk01.r-o7ynqc.r-6416eg.r-lrvibr.r-3s2u2q").click();')
+            unfollow2 = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="'+str(self.lang["unfollow2"])+'"]')))
+            self.driver.execute_script("arguments[0].click();", unfollow2)
 
-            time.sleep(3)
+            time.sleep(1)
 
         except Exception as ex:
             print("отписаться не получилось от @", profile, ", по причине", ex)
-            time.sleep(3)
+            time.sleep(1)
 
         time.sleep(1)
         self.result_server("result_unfollow", {'user_id': str(user_id), 'login': profile})
