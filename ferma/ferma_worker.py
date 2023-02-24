@@ -17,6 +17,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from ferma.helpers.metamask import MetamaskSelenium
 from ferma.helpers.functions_browser import find_element_by_xpath_v2
 
+
+
 """
 модуль, исполнитель, фермер.
 """
@@ -140,10 +142,10 @@ class FermaWorker:
                 print()
 
             if local:
-                r = modules.file_local_get_contents(uri_script)
+                r = common.file_local_get_contents(uri_script)
                 d = task_init + r
             else:
-                r = modules.file_get_contents(uri_script)
+                r = common.file_get_contents(uri_script)
                 d = task_init + r.decode()
 
             # выполняем скрипт
