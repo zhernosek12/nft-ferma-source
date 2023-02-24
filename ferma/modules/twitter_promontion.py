@@ -28,7 +28,9 @@ class TwitterPromontion:
 
             elements = await response.json()
 
-            assert len(elements) != 0, "нет задач."
+            # assert len(elements) != 0, "нет задач."
+            if len(elements) == 0:
+                continue
 
             for elem in elements:
                 type = elem["type"]
@@ -100,8 +102,9 @@ class TwitterPromontion:
 
             time.sleep(1.5)
 
-            follow = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Follow"]')))
-            self.driver.execute_script("arguments[0].click();", follow)
+            # искать не фоллов на англ и рус
+
+            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-42olwf.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr").click();')
 
             # проверим, лимит не превышен?
             time.sleep(1.5)
@@ -301,19 +304,19 @@ class TwitterPromontion:
 
             time.sleep(1)
 
-            unfollow = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Following"]')))
-            self.driver.execute_script("arguments[0].click();", unfollow)
+            # unfollow
+            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-1niwhzg.r-1ets6dv.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr").click();')
 
             time.sleep(1)
 
-            unfollow2 = self.driver_wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Unfollow"]')))
-            self.driver.execute_script("arguments[0].click();", unfollow2)
+            # accept action
+            self.driver.execute_script('$("div.css-18t94o4.css-1dbjc4n.r-42olwf.r-sdzlij.r-1phboty.r-rs99b7.r-16y2uox.r-6gpygo.r-peo1c.r-1ps3wis.r-1ny4l3l.r-1udh08x.r-1guathk.r-1udbk01.r-o7ynqc.r-6416eg.r-lrvibr.r-3s2u2q").click();')
 
-            time.sleep(1)
+            time.sleep(3)
 
         except Exception as ex:
             print("отписаться не получилось от @", profile, ", по причине", ex)
-            time.sleep(1)
+            time.sleep(3)
 
         time.sleep(1)
         self.result_server("result_unfollow", {'user_id': str(user_id), 'login': profile})
