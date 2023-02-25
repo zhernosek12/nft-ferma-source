@@ -1,4 +1,5 @@
 import time
+import datetime
 
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -55,6 +56,9 @@ class CustomBrowser:
 
         return self.driver
 
+    def connect_info(self):
+        self.log("Запуск профиля: " + str(self.user_profile_id) + " (" + self.user_data_dir + ")")
+
     def get_driver(self):
         return self.driver
 
@@ -72,6 +76,9 @@ class CustomBrowser:
             return True
         except:
             return False
+
+    def log(self, text):
+        print(datetime.datetime.now(), "-", self.user_profile_id, "-", text)
 
 #dir = os.path.dirname(os.path.realpath(__file__))
 

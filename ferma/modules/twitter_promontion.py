@@ -40,7 +40,8 @@ class TwitterPromontion:
 
             elements = await response.json()
 
-            # assert len(elements) != 0, "нет задач."
+            assert len(elements) != 0, "нет задач."
+
             if len(elements) == 0:
                 continue
 
@@ -49,9 +50,13 @@ class TwitterPromontion:
                 profile = elem["profile"]
                 data = elem["data"]
 
+                if type == "NO_TASKS":
+                    continue
+
                 if self.browser is None:
                     self.browser = self.manager.parse_and_run_browser(profile)
                     self.browser.connect()
+                    self.browser.connect_info()
                     self.driver = self.browser.get_driver()
                     self.driver_wait = WebDriverWait(self.driver, 15)
 
@@ -84,14 +89,12 @@ class TwitterPromontion:
                 if type == "GET_MY_FOLLOWERS":
                     self.tw_get_my_followers(data["login"], profile["id"])
 
+            self.browser.log("ждем следующего действия :) " + str(self.step))
 
-            # остановим задачу
             if self.browser is not None:
                 self.browser.stop()
                 self.browser = None
                 time.sleep(4)
-
-            print("ждем следующего действия :)", self.step)
 
             self.step = self.step + 1
             if self.step > self.max_steps:
@@ -115,6 +118,7 @@ class TwitterPromontion:
             self.lang = self.lang_RU
 
     def tw_follow(self, url):
+        self.browser.log("Подписываемся!")
         try:
             if url is not None:
                 self.driver.get(url)
@@ -143,7 +147,7 @@ class TwitterPromontion:
             return "OK"
 
         except Exception as ex:
-            print("ошибка при фоловинге:", ex)
+            self.browser.log("ошибка при фоловинге:" + str(ex))
             time.sleep(2)
 
             return "FAIL"
@@ -172,7 +176,7 @@ class TwitterPromontion:
 
     def tw_get_followers(self, profile, user_id):
 
-        print("Узнаем подписчиков для @", profile)
+        self.browser.log("Узнаем подписчиков для @" + str(profile))
 
         follower_list = []
         step = 0
@@ -202,7 +206,7 @@ class TwitterPromontion:
                     if text and text[:1] == "@":
                         username = text[1:]
                         if username not in follower_list:
-                            print(username, "add.")
+                            self.browser.log("+" + str(username))
                             follower_list.append(username)
                 except:
                     pass
@@ -217,7 +221,7 @@ class TwitterPromontion:
 
     def tw_follow_and_scan_count(self, profile, user_id):
 
-        print("смотрим на подписчика, и подписываемся если нам такое подходит @", profile)
+        self.browser.log("смотрим на подписчика, и подписываемся если нам такое подходит @" + str(profile))
 
         # открываем всех подписчиков
         self.driver.get("https://twitter.com/"+profile)
@@ -241,7 +245,7 @@ class TwitterPromontion:
             if followers == 0:
                 followers = 1
 
-            print("following", following, "followers", followers)
+            self.browser.log("подписчиков/подписан " + str(following) + "/" + str(followers))
 
         except Exception as e:
             time.sleep(1)
@@ -301,7 +305,7 @@ class TwitterPromontion:
                     if text and text[:1] == "@":
                         username = text[1:]
                         if username not in follower_list:
-                            print(username, "+")
+                            self.browser.log("@" + str(username) + " добавлен")
                             follower_list.append(username)
                 except:
                     pass
@@ -315,7 +319,7 @@ class TwitterPromontion:
 
     def tw_unfollow(self, profile, user_id):
 
-        print("отписываемся от @", profile)
+        self.browser.log("отписываемся от @" + str(profile))
 
         try:
             self.driver.get("https://twitter.com/" + profile)
@@ -333,7 +337,7 @@ class TwitterPromontion:
             time.sleep(1)
 
         except Exception as ex:
-            print("отписаться не получилось от @", profile, ", по причине", ex)
+            self.browser.log("отписаться не получилось от @" + str(profile))
             time.sleep(1)
 
         time.sleep(1)
@@ -341,9 +345,8 @@ class TwitterPromontion:
 
     def tw_get_my_followers(self, profile, user_id):
 
-        print("смотрим подписчиков @", profile)
+        self.browser.log("смотрим подписчиков @" + str(profile))
 
-        # открываем всех подписчиков
         self.driver.get("https://twitter.com/"+profile)
         time.sleep(2)
 
@@ -363,11 +366,12 @@ class TwitterPromontion:
             if followers == 0:
                 followers = 1
 
-            print("following", following, "followers", followers)
+            self.browser.log("подписчиков/подписок " + str(following) + "/" + str(followers))
 
         except Exception as e:
             time.sleep(1)
             print("err", e)
+            self.browser.log("ошибка" + str(e))
             pass
 
         time.sleep(1)
@@ -382,6 +386,6 @@ class TwitterPromontion:
         response = requests.request("POST", url, headers=headers, data=datas)
 
         if (response.json())["status"] == "success":
-            print("--> успешно!")
+            self.browser.log("--> результат отправлен!")
         else:
-            print("--> ошибка:", response.text)
+            self.browser.log("--> ошибка при отправлении:" + response.text)
