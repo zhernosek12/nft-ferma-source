@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # выгрузка requirements.txt --> "pipreqs ."
+# new
 
 import asyncio
 import time
