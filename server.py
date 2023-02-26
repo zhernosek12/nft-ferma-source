@@ -43,7 +43,7 @@ class Server:
     async def script_error(self, profile_id, robot_script_id, robot_project_id, message):
         async with aiohttp.ClientSession() as session:
             response = await session.post(
-                url=self.url_api + "?method=setScriptStatus&secret_key=" + self.secret_key,
+                url=self.url_api + "?method=set_script_status&secret_key=" + self.secret_key,
                 data={'profile_id': profile_id,
                       'robot_project_id': robot_project_id,
                       'robot_script_id': robot_script_id,
@@ -51,12 +51,12 @@ class Server:
                       'message': message}
             )
             await response.text()
-        print(await response.text())
+        return response
 
     async def script_success(self, profile_id, robot_script_id, robot_project_id):
         async with aiohttp.ClientSession() as session:
             response = await session.post(
-                url=self.url_api + "?method=setScriptStatus&secret_key=" + self.secret_key,
+                url=self.url_api + "?method=set_script_status&secret_key=" + self.secret_key,
                 data={'profile_id': profile_id,
                       'robot_project_id': robot_project_id,
                       'robot_script_id': robot_script_id,
@@ -64,18 +64,18 @@ class Server:
                       'message': ''}
             )
             await response.text()
-        print(await response.text())
+        return response
 
     async def request_script_finish(self, profile_id, robot_project_id, type):
         async with aiohttp.ClientSession() as session:
             response = await session.post(
-                url=self.url_api + "?method=setScriptStatus&secret_key=" + self.secret_key,
+                url=self.url_api + "?method=set_script_status&secret_key=" + self.secret_key,
                 data={'profile_id': profile_id,
                       'robot_project_id': robot_project_id,
                       'type': type}
             )
             await response.text()
-        print(await response.text())
+        return response
 
     """
         твиттер
