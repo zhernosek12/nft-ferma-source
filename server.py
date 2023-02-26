@@ -89,19 +89,31 @@ class Server:
 
         return response
 
+    async def search_error_scripts(self):
+        async with aiohttp.ClientSession(headers=self.headers, timeout=self.timeout) as session:
+            response = await session.get(
+                url=self.url_api + "?method=searchErrorScripts&secret_key=" + self.secret_key,
+            )
+            await response.text()
 
-"""
+        return response
 
+    async def download_script(self, script_id):
+        async with aiohttp.ClientSession(headers=self.headers, timeout=self.timeout) as session:
+            response = await session.get(
+                url=self.url_api + "?method=getSourceScript&secret_key=" + self.secret_key + "&script_id=" + str(script_id),
+            )
+            await response.text()
 
-def get_robot_project_error():
+        return response
 
-    url = "http://ferma.zhernosek.xyz/Api.php?method=getRobotProject&robot_project_id=3&profile_id=7"
+    async def publish_source_script(self, script_id, source_code):
+        # source_code
+        async with aiohttp.ClientSession() as session:
+            response = await session.post(
+                url=self.url_api + "?method=publishSourceScript&secret_key=" + self.secret_key + "&script_id=" + str(script_id),
+                data={'source_code': source_code}
+            )
+            await response.text()
 
-    payload = {}
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    return response.json()
-
-"""
+        return response

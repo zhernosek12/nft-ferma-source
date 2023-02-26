@@ -77,26 +77,5 @@ class CustomBrowser:
         except:
             return False
 
-    def log(self, text):
+    def log(self, text=""):
         print(datetime.datetime.now(), "-", self.user_profile_id, "-", text)
-
-#dir = os.path.dirname(os.path.realpath(__file__))
-
-#chromedriver_path = dir + r"\Exec\chromedriver-windows-x64.exe"
-#user_data_dir = dir + r"\Browser"
-#extensions = ["Canvas-Fingerprint-Defender.crx"]
-
-#assert os.path.exists(chromedriver_path), "chromedriver-windows-x64.exe not found"
-
-#for file in extensions:
-#    assert os.path.exists(dir + "\\" + file), file + " not found"
-
-#proxy = "socks5://8ByYP4Hx:qKxvHiMf@45.138.4.158:62943"
-#user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-#user_profile_id = "prof2"
-
-
-#customBrowser = CustomBrowser(exec_path, proxy, user_agent, user_data_dir, user_profile_id, extensions)
-#driver = customBrowser.driver()
-
-#driver.get("https://amiunique.org/fp")

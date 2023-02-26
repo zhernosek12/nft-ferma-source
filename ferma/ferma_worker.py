@@ -17,19 +17,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from ferma.helpers.metamask import MetamaskSelenium
 from ferma.helpers.functions_browser import find_element_by_xpath_v2
 
-
-
 """
 модуль, исполнитель, фермер.
 """
 
+
 class FermaWorker:
-    def __init__(self, server, driver, tasks_for_farmer, robot_project_id, profile_id):
+    def __init__(self, server, browser, driver, tasks_for_farmer=None, robot_project_id=None, profile_id=None):
         self.server = server
+        self.browser = browser
         self.driver = driver
         self.tasks_for_farmer = tasks_for_farmer
-        self.robot_project_id = robot_project_id        # проект который берем в работу
-        self.profile_id = profile_id                    # исполнитель сам фермер.
+        self.robot_project_id = robot_project_id  # проект который берем в работу
+        self.profile_id = profile_id  # исполнитель сам фермер.
 
         self.test = False
         self.test_local = False
@@ -47,7 +47,7 @@ class FermaWorker:
     """
 
     def add_test_init_param(self, key, value):
-        self.test_local_init = self.test_local_init + key +  "='" + value + "'" + "\n"
+        self.test_local_init = self.test_local_init + key + "='" + value + "'" + "\n"
 
     def end_init_params(self):
         self.test_local_init = self.test_local_init + "#end_init" + "\n"
@@ -56,7 +56,7 @@ class FermaWorker:
         self.restume = True
         self.run_code = False
 
-    def exec_scripts(self, code):
+    async def exec_scripts(self, code):
 
         # параметры которые необходимы при написании скрипта
         driver = self.driver
@@ -67,7 +67,7 @@ class FermaWorker:
         num_line = 1
         init_lines = True
         try:
-            print("--------")
+            self.browser.log("--------")
             num_line = 1
             for line in code.split("\n"):
                 if line == "#end_init":
@@ -78,20 +78,18 @@ class FermaWorker:
 
                 # если у нас разрешено выполнять код
                 if self.run_code == True or init_lines == True:
-                    print(num_line, "-->", line)
+                    self.browser.log(str(num_line) + " --> " + str(line))
                     exec(line)
                     num_line = num_line + 1
 
-            print("--------")
+            self.browser.log("--------")
         except Exception as ex:
             status = "FAIL"
             message = str(ex)
             message = message + "\n"
             message = message + "line error: " + str(num_line)
 
-            print("message:", message)
-
-        return status, message
+        return status, message, num_line
 
     """
     с помощью этого модуля мы создаем скрипт для автоматизации.
@@ -112,8 +110,7 @@ class FermaWorker:
         print("Выполнено за:", datetime.now() - start_time)
     """
 
-
-    async def to_work(self):
+    async def to_work_from_server(self):
 
         scripts_finish_status = "script_finish_success"
 
@@ -123,33 +120,12 @@ class FermaWorker:
             task_name = task["name"]
             task_init = task["init"]
             task_code_url = task["code_url"]
-            local_py = ""
-            local = False
-            uri_script = ""
 
-            if "local_py" in task:
-                local_py = task["local_py"]
-
-            if local_py != "":
-                local = True
-                uri_script = local_py
-                print(task_name, "local file:", local_py)
-                print()
-            else:
-                local = False
-                uri_script = task_code_url
-                print(task_name, "task url:", task_code_url)
-                print()
-
-            if local:
-                r = common.file_local_get_contents(uri_script)
-                d = task_init + r
-            else:
-                r = common.file_get_contents(uri_script)
-                d = task_init + r.decode()
+            r = common.file_get_contents(task_code_url)
+            d = task_init + r.decode()
 
             # выполняем скрипт
-            status, message = self.exec_scripts(d)
+            status, message, _ = self.exec_scripts(d)
 
             if self.test == False:
                 if status == "FAIL":
@@ -167,9 +143,7 @@ class FermaWorker:
         time.sleep(1)
         self.driver.quit()
 
-
-
-    #def connected(self, profile):
+    # def connected(self, profile):
     #
     #    # если мы создаем локальную задачу
     #    if self.test_local == True:
