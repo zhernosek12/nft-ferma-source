@@ -115,5 +115,12 @@ class Server:
                 data={'source_code': source_code}
             )
             await response.text()
+        return response
 
+    async def dev_get_all_scripts(self):
+        async with aiohttp.ClientSession(headers=self.headers, timeout=self.timeout) as session:
+            response = await session.get(
+                url=self.url_api + "?method=getAllScripts&secret_key=" + self.secret_key,
+            )
+            await response.text()
         return response

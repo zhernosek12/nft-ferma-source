@@ -101,6 +101,20 @@ class Manager:
 
         return True
 
+    async def dev_get_all_scripts(self):
+        response = await self.server.dev_get_all_scripts()
+        scripts = (await response.json())["data"]
+
+        print("\nСкрипты:")
+
+        for script in scripts:
+            _id = str(script["id"])
+            _id += "."
+            if len(_id) == 2:
+                _id += " "
+
+            print(_id, script["category_name"], "||", script["name"], "-->", script["inputs"])
+
     async def dev_download_script(self, fullpath, script_id):
 
         response = await self.server.download_script(script_id)
@@ -224,7 +238,7 @@ class Manager:
         print("\nНайдено", len(scripts), "скриптов:")
 
         for num, script in enumerate(scripts):
-            print(str(num + 1) + ".", script["name"] + " (" + str(script["cnt"]) + " ошибок)")
+            print(str(num + 1) + ".", script["name"] + " (" + str(script["cnt"]) + " ситуаций)")
             scripts_ids.append(script["id"])
 
         return scripts_ids
@@ -297,17 +311,18 @@ def main():
         config["developer_mode"] = 1
         common.save_config(config)
 
-        question2 = int(input('1. Скачать и запустить выполнение скрипта\n'
-                              '2. Опубликовать скрипт на ферме\n'
-                              '3. Показать скрипты с ошибками\n'
+        question2 = int(input('1. Скачать и выполнить скрипт\n'
+                              '2. Опубликовать скрипт\n'
+                              '3. Скрипты с ошибками\n'
                               '4. Выключить «Режим разработчика»\n'
                               'Ввод: '))
 
         if question2 == 1:
-            question3 = input(f'ID запускаемого скрипта (#{developer_script_run})?\nВвод: ')
-            if question3 == "":
-                question3 = developer_script_run
-            asyncio.new_event_loop().run_until_complete(manager.dev_run_script(question3))
+            asyncio.new_event_loop().run_until_complete(manager.dev_get_all_scripts())
+            script_id = input(f'\nID запускаемого скрипта (#{developer_script_run})?\nВвод: ')
+            if script_id == "":
+                script_id = developer_script_run
+            asyncio.new_event_loop().run_until_complete(manager.dev_run_script(script_id))
 
         elif question2 == 2:
             question3 = input(f'Публикация скрипта (#{developer_script_run}) - напиши «Да» для подтверждения\nВвод: ')
