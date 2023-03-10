@@ -89,9 +89,8 @@ class TwitterPromontion:
                 if type == "GET_MY_FOLLOWERS":
                     self.tw_get_my_followers(data["login"], profile["id"])
 
-            self.browser.log("ждем следующего действия :) " + str(self.step))
-
             if self.browser is not None:
+                self.browser.log("ждем следующего действия :) " + str(self.step))
                 self.browser.stop()
                 self.browser = None
                 time.sleep(4)
