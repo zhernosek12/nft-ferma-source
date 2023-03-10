@@ -81,7 +81,7 @@ class TwitterPromontion:
                 if type == "SCAN_MY_FOLLOW":
                     self.tw_scan_my_followers(profile["id"])
 
-                # отписываемся
+                # отписываемся 2
                 if type == "UNFOLLOW":
                     self.tw_unfollow(data["login"], profile["id"])
 
