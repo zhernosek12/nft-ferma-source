@@ -2,6 +2,9 @@ import time
 import asyncio
 import aiohttp
 import common
+import os.path
+import sys
+
 
 from datetime import datetime
 from selenium import webdriver
@@ -48,10 +51,15 @@ class FermaWorker:
 
         status = "SUCCESS"
         message = ""
-        num_line = 1
 
         try:
             self.browser.log("--------")
+            self.browser.log("run code:")
+            self.browser.log("")
+            self.browser.log(code)
+
+            exec(code)
+            """
             for line in code.split("\n"):
                 if line == "#end_init":
                     num_line = 0
@@ -59,13 +67,16 @@ class FermaWorker:
                 self.browser.log(str(num_line) + " --> " + str(line))
                 exec(line)
                 num_line = num_line + 1
+            """
 
+            self.browser.log("")
             self.browser.log("--------")
         except Exception as ex:
             status = "FAIL"
-            message = str(ex) + " || " + "line error: " + str(num_line)
+            #message = str(ex) + " || " + "line error: " + str(num_line)
+            message = str(ex)
 
-        return status, message, num_line
+        return status, message
 
 
     async def to_work_from_server(self):
@@ -76,16 +87,18 @@ class FermaWorker:
             robot_script_id = task["id"]
             source_code = task["source_code"]
 
-            status, message, num_line = await self.exec_scripts(source_code)
+            status, message = await self.exec_scripts(source_code)
 
             if status == "FAIL":
                 scripts_finish_status = "script_finish_error"
                 await self.server.script_error(self.profile_id, robot_script_id, self.robot_project_id, message)
+                self.browser.log(f"Ошибка при выполнении скрипта, статус отправлен на сервер!")
                 time.sleep(1)
                 self.driver.quit()
                 break
             else:
                 await self.server.script_success(self.profile_id, robot_script_id, self.robot_project_id)
+                self.browser.log(f"Скрипт успешно отработан!")
                 time.sleep(1)
 
         await self.server.request_script_finish(self.profile_id, self.robot_project_id, scripts_finish_status)

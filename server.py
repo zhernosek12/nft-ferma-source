@@ -32,10 +32,10 @@ class Server:
             await response.text()
         return response
 
-    async def robotProject(self):
+    async def robotProject(self, profile_name):
         async with aiohttp.ClientSession() as session:
             response = await session.get(
-                url=self.url_api + "?method=getRobotProject&secret_key=" + self.secret_key,
+                url=self.url_api + "?method=getRobotProject&profile_name=" + profile_name + "&secret_key=" + self.secret_key,
             )
             await response.text()
         return response

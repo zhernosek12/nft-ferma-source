@@ -73,9 +73,9 @@ class Manager:
         await (TwitterPromontion(self)).start()
         return True
 
-    async def ferma_run(self):
+    async def ferma_run(self, profile_name):
         for _ in range(self.ferma_steps):
-            response = await self.server.robotProject()
+            response = await self.server.robotProject(profile_name)
             data = (await response.json())["data"]
 
             assert (data) != 0, "Задач пока нет :) запусти алгоритм позже"
@@ -95,9 +95,8 @@ class Manager:
             await worker.to_work_from_server()
 
             time_sleep = random.randrange(self.ferma_min_time, self.ferma_max_time)
-            time.sleep(time_sleep)
-
             print("ждем, сек", time_sleep)
+            time.sleep(time_sleep)
 
         return True
 
@@ -186,14 +185,14 @@ class Manager:
         time.sleep(1)
 
         worker = FermaWorker(self.server, browser, browser.get_driver())
-        status, message, num_line = (await worker.exec_scripts(source_code))
+        status, message = (await worker.exec_scripts(source_code))
 
         browser.log()
 
         if status == "SUCCESS":
             browser.log(f"Скрипт отработан успешно!")
         else:
-            browser.log(f"Возникла ошибка в строке: {num_line}")
+            browser.log(f"Возникла ошибка:")
             browser.log(f"{message}")
 
     async def dev_publish_script(self):
@@ -303,7 +302,11 @@ def main():
 
     elif question == 4:
         print("Запуск фермы...")
-        asyncio.new_event_loop().run_until_complete(manager.ferma_run())
+        profiles = asyncio.new_event_loop().run_until_complete(manager.my_profiles())
+        profile_id = input('\nНомер профиля для запуска\nВвод: ')
+        if profile_id != "":
+            profile_id = profiles[int(profile_id) - 1]
+        asyncio.new_event_loop().run_until_complete(manager.ferma_run(profile_id))
 
     elif question == 5:
         print("-- Режим разработчика --")
