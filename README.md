@@ -9,7 +9,7 @@
 
 1. https://chrome.google.com/webstore/detail/canvas-fingerprint-defend/lanfdkkpgfjfdikkncbnojekcppdebfp
 2. https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn
-3. https://antcpt.com/rus/download/google-chrome-options.html
+3. https://chrome.google.com/webstore/detail/cointool-gas-price/ehbppccdhiehpnnhjmahlkpfgnkejngb/related?hl=ru
 
 
 ## Инструкция
