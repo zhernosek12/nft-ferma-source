@@ -11,6 +11,10 @@
 2. https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn
 3. https://chrome.google.com/webstore/detail/cointool-gas-price/ehbppccdhiehpnnhjmahlkpfgnkejngb/related?hl=ru
 
+## Airdrops
+
+1. ArgentX https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb
+2. Bravos https://chrome.google.com/webstore/detail/braavos-smart-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma
 
 ## Инструкция
 
