@@ -16,7 +16,9 @@
 1. ArgentX https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb
 2. Bravos https://chrome.google.com/webstore/detail/braavos-smart-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma
 
-## Инструкция
+## Инструкции
+
+1. Arbitrum Nova https://github.com/zhernosek12/nft-ferma-source/blob/master/instructions/arbitrum_nova.md
 
 Запускаем PyCharm
 
