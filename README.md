@@ -22,4 +22,5 @@
 2. https://amiunique.org/fp - сайт для проверки отпечатка браузера
 3. https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html - проверить видит ли Selenium
 4. https://2ip.io/ru/privacy/ - проверка анонимности
+5. https://chainlist.org/
 
