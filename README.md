@@ -1,6 +1,6 @@
 # NFT ферма
 
-## Инструкции
+## Airdrops
 
 1. Arbitrum Nova https://github.com/zhernosek12/nft-ferma-source/blob/master/instructions/arbitrum_nova.md
 
@@ -10,11 +10,6 @@
 2. https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn
 3. https://chrome.google.com/webstore/detail/cointool-gas-price/ehbppccdhiehpnnhjmahlkpfgnkejngb/related?hl=ru
 4. https://chrome.google.com/webstore/detail/windscribe-free-proxy-and/hnmpcagpplmpfojmgmnngilcnanddlhb
-
-## Airdrops
-
-1. ArgentX https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb
-2. Bravos https://chrome.google.com/webstore/detail/braavos-smart-wallet/jnlgamecbpmbajjfhmmmlhejkemejdma
 
 #
 
