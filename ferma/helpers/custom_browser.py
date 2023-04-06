@@ -1,3 +1,4 @@
+import os
 import time
 import datetime
 
@@ -24,12 +25,14 @@ class CustomBrowser:
 
         options.add_argument(f"user-agent={self.user_agent}")
         options.add_argument(f"user-data-dir={self.user_data_dir}")
+
         #options.add_argument("window-size=1440,768")
 
         options.add_argument('--no-sandbox')
-        options.add_argument('--ignore-certificate-errors-spki-list')
         options.add_argument('--ignore-ssl-errors')
         options.add_argument("--ignore-certificate-errors")
+        options.add_argument('--ignore-certificate-errors-spki-list')
+
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--lang=en-US")
@@ -39,20 +42,24 @@ class CustomBrowser:
         options.add_argument("--enable-aggressive-domstorage-flushing")
         options.add_argument("--profiling-flush=1")                             # кажду секунду сохраняем данные
 
+        options.add_experimental_option("excludeSwitches", ['enable-automation'])
 
         wire_options = {
             'proxy': {
                 'http': self.proxy,
                 'https': self.proxy,
                 'no_proxy': 'localhost,127.0.0.1'
-            }
+            },
+            'verify_ssl': False
         }
 
         self.driver = webdriver.Chrome(
             executable_path=self.exec_path,
             chrome_options=options,
-            seleniumwire_options=wire_options
+            seleniumwire_options=wire_options,
         )
+
+        self.driver.get("https://github.com/zhernosek12/nft-ferma-source")
 
         return self.driver
 
