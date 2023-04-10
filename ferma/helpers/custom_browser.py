@@ -3,6 +3,7 @@ import time
 import datetime
 
 from seleniumwire import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 # working plugin 3.0.6
@@ -33,6 +34,7 @@ class CustomBrowser:
         options.add_argument("--ignore-certificate-errors")
         options.add_argument('--ignore-certificate-errors-spki-list')
 
+        options.add_argument('--disable-logging')
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--lang=en-US")
@@ -42,7 +44,8 @@ class CustomBrowser:
         options.add_argument("--enable-aggressive-domstorage-flushing")
         options.add_argument("--profiling-flush=1")                             # кажду секунду сохраняем данные
 
-        options.add_experimental_option("excludeSwitches", ['enable-automation'])
+        options.add_experimental_option("excludeSwitches", ['enable-automation', 'enable-logging'])
+        options.add_experimental_option("useAutomationExtension", False)
 
         wire_options = {
             'proxy': {
