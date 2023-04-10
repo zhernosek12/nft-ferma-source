@@ -20,4 +20,4 @@
 3. https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html - проверить видит ли Selenium
 4. https://2ip.io/ru/privacy/ - проверка анонимности
 5. https://chainlist.org/
-6. https://faucetlink.to/goerli - тестовые токены
+6. https://testnetbridge.com/ - можно купить тестовые токены
