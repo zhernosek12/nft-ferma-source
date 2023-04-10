@@ -3,7 +3,7 @@
 ## Airdrops
 
 1. Arbitrum Nova - https://github.com/zhernosek12/nft-ferma-source/blob/master/instructions/arbitrum_nova.md
-2. zkSync - https://github.com/zhernosek12/nft-ferma-source/blob/master/instructions/zkSync.md
+2. zkSync ERA - https://github.com/zhernosek12/nft-ferma-source/blob/master/instructions/zkSync.md
 
 ### плагины
 
