@@ -46,16 +46,17 @@ class Manager:
         except:
             return False
 
-    async def my_profiles(self):
+    async def my_profiles(self, debug=True):
         response = await self.server.myProfiles()
         profiles = (await response.json())["data"]
 
         assert len(profiles) != 0, "Профилей не найдено на ферме!"
 
-        print("\nПрофили:")
+        if debug:
+            print("\nПрофили:")
 
-        for num, name in enumerate(profiles):
-            print(str(num + 1) + ".", name)
+            for num, name in enumerate(profiles):
+                print(str(num + 1) + ".", name)
 
         return profiles
 
@@ -141,7 +142,7 @@ class Manager:
         fullpath = os.path.join(path, name)
         return fullpath
 
-    async def dev_run_script(self, script_id):
+    async def dev_run_script(self, script_id, profile_id=None):
         if script_id == "":
             print("Не удалось скачать скрипт - после «ID» пустое")
             return
@@ -159,8 +160,12 @@ class Manager:
             config["developer_script_run"] = script_id
             common.save_config(config)
 
-        profiles = await self.my_profiles()
-        profile_id = int(input('\nНомер профиля для запуска\nВвод: ')) - 1
+        if not profile_id:
+            profiles = await self.my_profiles()
+            profile_id = int(input('\nНомер профиля для запуска\nВвод: ')) - 1
+        else:
+            profiles = await self.my_profiles(False)
+            profile_id = profile_id - 1
 
         response = await self.server.profileInfo(profiles[profile_id])
         profile = (await response.json())["data"]
@@ -314,31 +319,38 @@ def main():
         config["developer_mode"] = 1
         common.save_config(config)
 
-        question2 = int(input('1. Скачать и выполнить скрипт\n'
-                              '2. Опубликовать скрипт\n'
-                              '3. Скрипты с ошибками\n'
-                              '4. Выключить «Режим разработчика»\n'
+        question2 = int(input('1. Выполнить последний сценарий;\n'
+                              '2. Скачать и выполнить скрипт;\n'
+                              '3. Опубликовать скрипт;\n'
+                              '4. Скрипты с ошибками;\n'
+                              '5. Выключить «Режим разработчика»;\n'
                               'Ввод: '))
 
         if question2 == 1:
+            script_id = developer_script_run
+            # первый профиль по дефолту
+            profile_id = 1
+            asyncio.new_event_loop().run_until_complete(manager.dev_run_script(script_id, profile_id))
+
+        elif question2 == 2:
             asyncio.new_event_loop().run_until_complete(manager.dev_get_all_scripts())
             script_id = input(f'\nID запускаемого скрипта (#{developer_script_run})?\nВвод: ')
             if script_id == "":
                 script_id = developer_script_run
             asyncio.new_event_loop().run_until_complete(manager.dev_run_script(script_id))
 
-        elif question2 == 2:
+        elif question2 == 3:
             question3 = input(f'Публикация скрипта (#{developer_script_run}) - напиши «Да» для подтверждения\nВвод: ')
             if question3.lower() == "да":
                 asyncio.new_event_loop().run_until_complete(manager.dev_publish_script())
 
-        elif question2 == 3:
+        elif question2 == 4:
             print("Поиск скриптов с ошибками...")
             scripts = asyncio.new_event_loop().run_until_complete(manager.dev_search_error_scripts())
             script_id = int(input('\nНомер скрипта для редактирования\nВвод: ')) - 1
             asyncio.new_event_loop().run_until_complete(manager.dev_run_script(scripts[script_id]))
 
-        elif question2 == 4:
+        elif question2 == 5:
             config["developer_mode"] = 0
             common.save_config(config)
             print("Режим разработчика выключен.")

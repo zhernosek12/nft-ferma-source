@@ -23,6 +23,11 @@ class MetamaskSelenium:
             if self.driver.title == "MetaMask Notification":
                 break
 
+    def reset_active_window(self):
+        for handle in self.driver.window_handles:
+            self.driver.switch_to_window(handle)
+            break
+
     def get_type_page(self):
         self.set_active_window()
         try:
@@ -46,11 +51,12 @@ class MetamaskSelenium:
         return self.page
 
     def unlock(self):
+        self.set_active_window()
+
         inputs = self.driver.find_elements_by_xpath('//*[@id="password"]')
         inputs[0].clear()
         inputs[0].send_keys(self.password)
 
-        #self.driver.find_element_by_xpath("//button[contains(text(),'Unlock')]").click()
         self.driver.find_element_by_xpath("//button[contains(@class,'button')]").click()
 
         time.sleep(2)
@@ -60,8 +66,9 @@ class MetamaskSelenium:
         except Exception as ex:
             pass
 
-        self.driver.close()
-        self.driver.switch_to.window(self.driver.window_handles[0])
+        time.sleep(2)
+
+        self.reset_active_window()
 
         if self.error != "":
             raise RuntimeError(self.error)
@@ -111,11 +118,24 @@ class MetamaskSelenium:
                 self.driver.find_element_by_xpath('//*[@id="app-content"]/div/div[2]/div/div[3]/button[2]').click()
                 time.sleep(1)
                 print('Sign confirmed')
-                self.driver.switch_to.window(self.driver.window_handles[0])
+                self.reset_active_window()
                 time.sleep(3)
         except Exception as ex:
             print(ex)
 
+    def accept_switch_network(self):
+        self.set_active_window()
+        time.sleep(0.5)
+        self.driver.find_element_by_xpath('//*[@id="app-content"]/div/div[2]/div/div[2]/div/button[2]').click()
+        time.sleep(1)
+        self.reset_active_window()
+
+    def confirm_txs(self):
+        self.set_active_window()
+        time.sleep(0.5)
+        self.driver.find_element_by_xpath('//*[@id="app-content"]/div/div[2]/div/div[2]/div/button[2]').click()
+        time.sleep(1)
+        self.reset_active_window()
 
 #metamaskSelenium = MetamaskSelenium(driver, "CookFabulous5824")
 
