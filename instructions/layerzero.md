@@ -4,7 +4,12 @@
 
 1. Устанавливаем кошелек Martian Wallet https://chrome.google.com/webstore/detail/martian-wallet-for-sui-ap/efbglgofoippbgcjepnhiblaibcnclgk
 2. Импортируем секретный ключ и авторизовываемся в кошелек под паролем из таблицы
-7. Открываем сайт https://theaptosbridge.com/bridge
+3. Открываем сайт https://theaptosbridge.com/bridge
+4. Подключаем 2 кошелька, 1 - метамаск 2 - мартиан
+5. Выбираем свап с ETH ( Сеть Arbitrum ) на WETH ( сеть Aptos )
+6. Указываем сумму __0.007__ и нажимаем __TRANSFER__
+7. После успешной транзакции, отправляет транзакцию в обратную сторону ( Aptos WETH --> Arbitrum ETH ) указывая максимальную сумму
+8. После успешной транзакции заносим в таблицу, и указываем стоиомсть газа
 
 
 
