@@ -26,7 +26,6 @@
 
 1. Переходим по ссылке https://layer3.xyz/quests/welcome-to-a-new-era, подключаем Metamask, выполняем квест и забираем 300xp Layer3.
 2. Преходим на Crew3 https://crew3.xyz/c/zksync/invite/4a4XcvbeRm1JX8NUrJ7J0, коннектимся с помощью Metamask и выполняем простые задания, такие как: подписаться на социальные сети, сделать репосты, пригласить друга и т.д. 
-3. https://galxe.com/Rubic/campaign/GCqpqU6CmF делаем условия, получаем NFT
 
 # 12. Pinata NFT
 
